@@ -9,11 +9,13 @@ use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Spatie\MediaLibrary\HasMedia;
 use Spatie\MediaLibrary\InteractsWithMedia;
+use Spatie\Translatable\HasTranslations;
 
 class Category extends Model implements HasMedia
 {
     use HasFactory;
     use InteractsWithMedia;
+    use HasTranslations;
 
     /**
      * @var string
@@ -25,6 +27,13 @@ class Category extends Model implements HasMedia
      */
     protected $casts = [
         'is_visible' => 'boolean',
+    ];
+
+    /**
+     * @var array<string>
+     */
+    protected $translatable = [
+        'name',
     ];
 
     public function children(): HasMany

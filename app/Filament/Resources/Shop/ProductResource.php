@@ -11,6 +11,7 @@ use Filament\Forms;
 use Filament\Forms\Components\SpatieMediaLibraryFileUpload;
 use Filament\Forms\Form;
 use Filament\Notifications\Notification;
+use Filament\Resources\Concerns\Translatable;
 use Filament\Resources\Resource;
 use Filament\Tables;
 use Filament\Tables\Table;
@@ -20,6 +21,8 @@ use Illuminate\Support\Str;
 
 class ProductResource extends Resource
 {
+    use Translatable;
+
     protected static ?string $model = Product::class;
 
     protected static ?string $slug = 'shop/products';
@@ -159,6 +162,14 @@ class ProductResource extends Resource
                                     ->relationship('categories', 'name')
                                     ->multiple()
                                     ->required(),
+                            ]),
+                        Forms\Components\Section::make('Variants')
+                            ->schema([
+                                Forms\Components\Repeater::make('variants')->relationship('variants')->schema(
+                                    [
+                                        Forms\Components\TextInput::make('name'),
+                                    ]
+                                )
                             ]),
                     ])
                     ->columnSpan(['lg' => 1]),

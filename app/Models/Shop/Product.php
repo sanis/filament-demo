@@ -7,14 +7,17 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\Relations\MorphMany;
 use Spatie\MediaLibrary\HasMedia;
 use Spatie\MediaLibrary\InteractsWithMedia;
+use Spatie\Translatable\HasTranslations;
 
 class Product extends Model implements HasMedia
 {
     use HasFactory;
     use InteractsWithMedia;
+    use HasTranslations;
 
     /**
      * @var string
@@ -32,6 +35,10 @@ class Product extends Model implements HasMedia
         'published_at' => 'date',
     ];
 
+    public $translatable = [
+        'name'
+    ];
+
     public function brand(): BelongsTo
     {
         return $this->belongsTo(Brand::class, 'shop_brand_id');
@@ -45,5 +52,10 @@ class Product extends Model implements HasMedia
     public function comments(): MorphMany
     {
         return $this->morphMany(Comment::class, 'commentable');
+    }
+
+    public function variants(): HasMany
+    {
+        return $this->hasMany(ProductVariant::class, 'shop_product_id');
     }
 }
